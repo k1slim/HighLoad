@@ -1,0 +1,42 @@
+@import "../variables";
+
+.tabs {
+  position: relative;
+  border-bottom: 1px solid $divider-color;
+  display: flex;
+  .tab {
+    border-bottom: 3px solid white;
+    padding: 17px 14px 15px;
+    letter-spacing: 0.3px;
+    text-align: left;
+    color: $primary-text-color;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border .1s;
+    &:first-child {
+      padding-left: 0;
+    }
+    &:not(.disabled) {
+      &:hover {
+        border-color: $primary-color;
+      }
+      &.active {
+        font-weight: 500;
+      }
+    }
+    &.disabled {
+      color: $secondary-text-color;
+      cursor: not-allowed;
+    }
+  }
+  .tabs-underline {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    border: none;
+    margin: 0;
+    background: $primary-color;
+    transition: width .3s, left .3s;
+  }
+}

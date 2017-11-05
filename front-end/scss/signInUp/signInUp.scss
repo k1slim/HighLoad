@@ -1,0 +1,9 @@
+@import "../variables";
+
+.sign-in-up-wrapper {
+  margin: 100px auto;
+  max-width: 400px;
+  .sign-in, .sign-up {
+    margin-top: 40px;
+  }
+}

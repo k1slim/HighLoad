@@ -1,0 +1,22 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "linebreak-style": 0,
+    "indent": [2, 4, {"SwitchCase": 1}],
+    "react/jsx-filename-extension": 0,
+    "react/jsx-indent": [2, 4],
+    "react/jsx-indent-props": [2, 4],
+    "no-debugger": 1,
+    "no-console": 0,
+    "comma-dangle": 0,
+    "react/prop-types": 0,
+    "react/jsx-closing-bracket-location": 0,
+    "react/jsx-no-bind": 0,
+    "react/no-array-index-key": 0,
+    "no-return-assign": 0
+  },
+  "extends": "airbnb"
+}

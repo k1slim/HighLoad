@@ -1,0 +1,21 @@
+@import "../variables";
+
+.input-field {
+  margin-bottom: 24px;
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid $primary-color;
+    outline: none;
+    padding: 10px 0;
+    font-family: "Open Sans", sans-serif;
+    &:focus {
+      border-bottom: 2px solid $dark-primary-color;
+    }
+  }
+}
