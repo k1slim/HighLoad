@@ -1,6 +1,6 @@
 const Tweet = require('../schemes/tweetScheme');
 
-module.exports = function (stream, io) {
+const streamHandler = (stream, cb) => {
     stream.on('data', function (data) {
         const tweet = {
             twid: data['id'],
@@ -13,8 +13,26 @@ module.exports = function (stream, io) {
 
         new Tweet(tweet).save(function (err) {
             if (!err) {
-                io.emit('tweet', tweet);
+                cb(tweet);
             }
         });
     });
+};
+
+const startStream = (twit, location, cb) => {
+    const boundingBox = `${location.lng - 1},${location.lat - 1},${location.lng + 1},${location.lat + 1}`;
+    twit.stream(
+        'statuses/filter',
+        { 'locations': boundingBox },
+
+        stream => stream.on('data', cb)
+    );
+    //        { 'locations': '-122.75,36.8,-121.75,37.8' },
+};
+
+const init = twit => module.exports.startStream = startStream.bind(null, twit);
+
+module.exports = {
+    init,
+    streamHandler
 };

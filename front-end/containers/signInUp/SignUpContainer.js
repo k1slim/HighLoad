@@ -28,7 +28,6 @@ class SignUpContainer extends Component {
     }
 }
 
-
 function mapStateToProps(state) {
     return {
         isSignUpRequested: state.auth.isSignUpRequested,

@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as actions from '../../actions';
 import Map from '../../components/map/Map';
 
 const getLocation = (callback) => {
@@ -7,26 +11,32 @@ const getLocation = (callback) => {
     }
 };
 
-export default class MapContainer extends Component {
+class MapContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = { currentCoordinates: {} };
+        this.state = {
+            currentCoordinates: {}
+        };
 
-        getLocation(coords => this.setState({
-            currentCoordinates: {
+        getLocation((coords) => {
+            const currentCoordinates = {
                 lat: coords.coords.latitude,
                 lng: coords.coords.longitude
-            }
-        }));
+            };
+
+            this.setState({ currentCoordinates });
+            this.props.setCurrentLocation(currentCoordinates);
+        });
     }
 
     render() {
         const { currentCoordinates } = this.state;
+        const { tweets } = this.props;
 
         return (
             <Map
                 currentCoordinates={currentCoordinates}
-                markers={[{ coordinates: { lat: -34.397, lng: 150.644 } }]}
+                markers={tweets}
                 googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
                 loadingElement={<div style={{ height: '100%' }} />}
                 containerElement={<div style={{ height: 'calc(100vh - 77px)' }} />}
@@ -35,3 +45,17 @@ export default class MapContainer extends Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        tweets: state.map.tweets
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setCurrentLocation: bindActionCreators(actions.setCurrentLocation, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
