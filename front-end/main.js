@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import configureStore from './store/configureStore';
+import connectProtectors from './helpers/routeProtectors';
 import AppLayout from './containers/common/AppLayout';
 import SignInContainer from './containers/signInUp/SignInContainer';
 import SignUpContainer from './containers/signInUp/SignUpContainer';
@@ -11,6 +12,8 @@ import SignInUp from './containers/signInUp/SignInUpContainer';
 import MapContainer from './containers/map/MapContainer';
 
 const store = configureStore();
+
+const { checkInitialURl } = connectProtectors(store);
 
 render(
     <Provider store={store}>
@@ -20,7 +23,7 @@ render(
                     <Route path="signin" component={SignInContainer} />
                     <Route path="signup" component={SignUpContainer} />
                 </Route>
-                <Route path="/" component={MapContainer} />
+                <Route path="/" component={MapContainer} onEnter={checkInitialURl} />
             </Route>
         </Router>
     </Provider>,

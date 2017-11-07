@@ -1,12 +1,35 @@
-module.exports = (app, db, passport) => {
-    app.route('/api/session').get(passport.getSession);
-    app.route('/api/login').post(passport.login);
-    app.route('/api/register').post(passport.register);
-    app.route('/api/logout').get(passport.logout);
+const express = require('express');
+const auth = express.Router();
+const common = express.Router();
 
-    app.route('/api/tweet').get(db.getTweets);
-    app.route('/api/tweet').post(db.createTweet);
-    app.route('/api/tweet/:id')
-        .delete(db.deleteTweet)
-        .put(db.updateTweet);
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.status(401).end();
+}
+
+const authRouter = (passport) => {
+    auth.post('/api/login', passport.login);
+    auth.post('/api/register', passport.register);
+    auth.get('/api/logout', passport.logout);
+
+    return auth;
+};
+
+const commonRouter = (db, passport) => {
+    common.get('/api/user', isLoggedIn, passport.getUser);
+
+    common.get('/api/tweet', isLoggedIn, db.getTweets);
+    common.post('/api/tweet', isLoggedIn, db.createTweet);
+
+    common.delete('/api/tweet/:id', isLoggedIn, db.deleteTweet);
+    common.put('/api/tweet/:id', isLoggedIn, db.updateTweet);
+
+    return common;
+};
+
+module.exports = {
+    authRouter,
+    commonRouter
 };

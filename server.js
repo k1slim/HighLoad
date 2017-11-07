@@ -35,6 +35,8 @@ app.use(function (req, res, next) {
 app.use(passport.pass.initialize());
 app.use(passport.pass.session());
 
-router(app, db, passport);
+app.use(router.authRouter(passport));
+app.use(router.commonRouter(db, passport));
+
 sockets(io);
 twitterStreaming.init(twit);

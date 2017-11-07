@@ -26,18 +26,16 @@ passport.deserializeUser((id, done) =>
         .then(null, err => done(err)));
 
 function login(req, res, next) {
-    const isSessionEnable = (req.query.session === 'true');
-
     passport.authenticate('local', function (err, user, info) {
         if (err) {
-            res.send(404, info);
+            res.status(404).send(info);
             return next(err);
         }
         if (!user) {
-            res.send(404, info);
+            res.status(404).send(info);
             return next(err);
         }
-        req.logIn(user, { session: isSessionEnable }, function (err) {
+        req.logIn(user, { session: true }, function (err) {
             if (err) {
                 return next(err);
             }
@@ -64,12 +62,11 @@ function register(req, res) {
             message: 'SignUp successful',
             user: { id: user.id, username: user.username }
         }))
-        .catch(() => res.send(409, { message: 'This email address has already registered' }));
+        .catch(() => res.status(409).send({ message: 'This email address has already registered' }));
 }
 
-function getSession(req, res) {
-    const user = req.user;
-    res.send(user ? { user: { id: user.id, username: user.username } } : 'false');
+function getUser(req, res) {
+    res.send({ username: req.user.username, id: req.user.id });
 }
 
 module.exports = {
@@ -77,5 +74,5 @@ module.exports = {
     login: login,
     logout: logout,
     register: register,
-    getSession: getSession
+    getUser: getUser
 };

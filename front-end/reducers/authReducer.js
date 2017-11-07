@@ -24,6 +24,18 @@ export const auth = createReducer({}, {
 
     [ActionTypes.RECEIVE_SIGN_UP_ERROR](state, action) {
         return { ...state, isSignUpRequested: false, signUpErrorMessage: action.payload.message };
+    },
+
+    [ActionTypes.REQUEST_USER](state) {
+        return { ...state, isUserRequested: true, userErrorMessage: '' };
+    },
+
+    [ActionTypes.RECEIVE_USER](state) {
+        return { ...state, isUserRequested: false };
+    },
+
+    [ActionTypes.RECEIVE_USER_ERROR](state, action) {
+        return { ...state, isUserRequested: false, userErrorMessage: action.payload.message };
     }
 });
 

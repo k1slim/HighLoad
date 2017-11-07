@@ -59,3 +59,28 @@ export function signUp(payload) {
             .catch(err => dispatch(receiveSignUpErrorMessage(err)));
     };
 }
+
+// Get user
+export function userRequest() {
+    return { type: actions.REQUEST_USER };
+}
+
+export function processUserRequest() {
+    return requestWrapper({ url: 'http://localhost:8080/api/user', type: 'GET', payload: {} });
+}
+
+export function userReceive(payload) {
+    return { type: actions.RECEIVE_USER, payload };
+}
+
+export function receiveUserErrorMessage(payload) {
+    return { type: actions.RECEIVE_USER_ERROR, payload };
+}
+
+export function getUser(payload) {
+    return (dispatch) => {
+        dispatch(userRequest());
+        return processUserRequest(payload)
+            .then(response => dispatch(userReceive(response.data)));
+    };
+}
