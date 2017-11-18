@@ -8,8 +8,8 @@ export const map = createReducer({}, {
         const tweet = action.payload;
         tweets.push({
             coordinates: {
-                lng: parseFloat(tweet.coordinates.coordinates[0]),
-                lat: parseFloat(tweet.coordinates.coordinates[1])
+                lng: parseFloat(tweet.coordinates[0]),
+                lat: parseFloat(tweet.coordinates[1])
             }
         });
 

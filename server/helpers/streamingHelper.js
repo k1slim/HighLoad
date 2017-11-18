@@ -20,14 +20,15 @@ const streamHandler = (stream, cb) => {
 };
 
 const startStream = (twit, location, cb) => {
-    const boundingBox = `${location.lng - 1},${location.lat - 1},${location.lng + 1},${location.lat + 1}`;
-    twit.stream(
-        'statuses/filter',
-        { 'locations': boundingBox },
-
-        stream => stream.on('data', cb)
-    );
-    //        { 'locations': '-122.75,36.8,-121.75,37.8' },
+    let currentStream;
+    twit.stream('statuses/filter', { 'locations': location }, (stream) => {
+        stream.on('data', cb);
+        stream.on('error', (error, code) => {
+            console.log(error + ': ' + code);
+        });
+        currentStream = stream;
+    });
+    return currentStream;
 };
 
 const init = twit => module.exports.startStream = startStream.bind(null, twit);
