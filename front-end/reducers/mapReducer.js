@@ -5,15 +5,7 @@ export const map = createReducer({}, {
     [ActionTypes.NEW_TWEET](state, action) {
         const tweets = [...state.tweets];
 
-        const tweet = action.payload;
-        tweets.push({
-            coordinates: {
-                lng: parseFloat(tweet.coordinates[0]),
-                lat: parseFloat(tweet.coordinates[1])
-            }
-        });
-
-        return { ...state, tweets };
+        return { ...state, tweets: [...tweets, ...action.payload] };
     }
 
 });

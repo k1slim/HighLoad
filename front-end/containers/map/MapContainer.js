@@ -15,7 +15,8 @@ class MapContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentCoordinates: {}
+            currentCoordinates: { lat: 51.5, lng: -0.1 },
+            infoWindowData: null
         };
 
         getLocation((coords) => {
@@ -33,12 +34,22 @@ class MapContainer extends Component {
         const NE = bounds.getNorthEast();
         const SW = bounds.getSouthWest();
 
-        const boundingBox = `${SW.lng()},${SW.lat()},${NE.lng()},${NE.lat()}`;
+        // const boundingBox = `${SW.lng()},${SW.lat()},${NE.lng()},${NE.lat()}`;
+        const boundingBox = {
+            swLng: SW.lng(),
+            swLat: SW.lat(),
+            neLng: NE.lng(),
+            neLat: NE.lat()
+        };
         this.props.setCurrentLocation(boundingBox);
     }
 
+    toggleInfoWindow(marker) {
+        this.setState({ infoWindowData: marker });
+    }
+
     render() {
-        const { currentCoordinates } = this.state;
+        const { currentCoordinates, infoWindowData } = this.state;
         const { tweets } = this.props;
 
         return (
@@ -51,6 +62,8 @@ class MapContainer extends Component {
                 loadingElement={<div style={{ height: '100%' }} />}
                 containerElement={<div style={{ height: 'calc(100vh - 77px)' }} />}
                 mapElement={<div style={{ height: '100%' }} />}
+                infoWindowData={infoWindowData}
+                toggleInfoWindow={this.toggleInfoWindow.bind(this)}
             />
         );
     }
