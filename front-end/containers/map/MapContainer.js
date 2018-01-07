@@ -26,6 +26,7 @@ class MapContainer extends Component {
             };
 
             this.setState({ currentCoordinates });
+            this.props.getInitialTweets({ coordinates: currentCoordinates });
         });
     }
 
@@ -77,7 +78,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setCurrentLocation: bindActionCreators(actions.setCurrentLocation, dispatch)
+        setCurrentLocation: bindActionCreators(actions.setCurrentLocation, dispatch),
+        getInitialTweets: bindActionCreators(actions.getInitialTweets, dispatch)
     };
 }
 

@@ -1,0 +1,16 @@
+# node_modules\.bin\artillery run perf.yml -o perfReport.json
+
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 60
+      arrivalRate: 1000
+scenarios:
+  - flow:
+    - post:
+        url: "/api/login"
+        json:
+          username: "admin@admin.com"
+          password: "123"
+    - get:
+        url: "/api/user"
