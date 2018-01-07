@@ -3,12 +3,15 @@ const Tweet = require('../schemes/tweetScheme');
 const streamHandler = (stream, cb) => {
     stream.on('data', function (data) {
         const tweet = {
-            twid: data['id'],
-            active: false,
-            author: data['user']['name'],
-            avatar: data['user']['profile_image_url'],
-            body: data['text'],
-            date: data['created_at']
+            twid: data.id,
+            coordinates: data.coordinates.coordinates,
+            hashTags: data.entities.hashtags,
+            lang: data.lang,
+            author: data.user.name,
+            avatar: data.user.profile_image_url,
+            text: data.text,
+            created_at: data.created_at,
+            active: false
         };
 
         new Tweet(tweet).save(function (err) {
@@ -19,13 +22,11 @@ const streamHandler = (stream, cb) => {
     });
 };
 
-const startStream = (twit, location, cb) => {
+const startStream = (twit, cb) => {
     let currentStream;
-    twit.stream('statuses/filter', { 'locations': location }, (stream) => {
+    twit.stream('statuses/filter', { 'locations': '-180,-89,180,89' }, (stream) => {
         stream.on('data', cb);
-        stream.on('error', (error, code) => {
-            console.log(error + ': ' + code);
-        });
+        stream.on('error', error => console.log(error));
         currentStream = stream;
     });
     return currentStream;

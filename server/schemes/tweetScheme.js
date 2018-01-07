@@ -5,8 +5,11 @@ const Tweet = mongoose.Schema({
     active: Boolean,
     author: String,
     avatar: String,
-    body: String,
-    date: Date
+    coordinates: Array,
+    hashTags: Array,
+    lang: String,
+    text: String,
+    created_at: Date
 });
 
 

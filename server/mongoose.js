@@ -29,7 +29,7 @@ function getTweets(req, res, next) {
         findObj.date = req.params.date;
     }
 
-    Tweet.find(findObj, 'twid active author avatar body date',
+    Tweet.find(findObj, 'twid active author avatar text created_at',
         {
             skip: req.params.start || 0,
             limit: req.params.start || 10

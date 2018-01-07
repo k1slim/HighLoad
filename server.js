@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const Twitter = require('ntwitter');
+const Twitter = require('twitter');
 
 const db = require('./server/mongoose');
 const config = require('./server/config');
