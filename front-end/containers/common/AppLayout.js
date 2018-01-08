@@ -5,7 +5,7 @@ const AppLayout = ({ children }) => (
     <main>
         <header className="page-header">
             <h1>
-                High Load
+                Twitter Cartograph
             </h1>
         </header>
         {children}
