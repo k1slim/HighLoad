@@ -3,5 +3,5 @@ Project Documentation:
 1) Specification
 https://docs.google.com/document/d/1MGnu2U7ISOtxRt8s2qu42gqdFu3i58K1G2kZLMBztYk/edit?usp=sharing
 
-2) Prototype
-https://hed3g3.axshare.com
+2) Moqups
+https://ninjamock.com/s/KCDKFWx
