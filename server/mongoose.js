@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
+
 const config = require('./config.js');
 const Tweet = require('./schemes/tweetScheme');
 const dbUrl = process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
     config.mongoDB.url;
+
+const dataConverters = require('./helpers/dataConverters');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(dbUrl, { useMongoClient: true });
@@ -29,7 +32,7 @@ function getTweets(req, res, next) {
         findObj.date = req.params.date;
     }
 
-    Tweet.find(findObj, 'twid active author avatar text created_at',
+    Tweet.find(findObj, 'twid active author coordinates hashTags avatar text created_at',
         {
             skip: req.params.start || 0,
             limit: req.params.start || 10
@@ -37,6 +40,26 @@ function getTweets(req, res, next) {
         .sort({ date: 'desc' })
         .then(data => res.json(data))
         .then(null, err => next(err));
+}
+
+function getRemoteTweets(twit, req, res, next) {
+    const date = new Date();
+    twit.get('search/tweets', {
+        q: `since:${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        geocode: `${req.query.lat},${req.query.lng},100km`,
+        count: 800
+    }, function (error, response) {
+        if (error) {
+            return next(error);
+        }
+
+        return res.json(response.statuses
+            .filter(status => status.coordinates &&
+                status.coordinates.coordinates &&
+                status.coordinates.coordinates[0] !== null)
+            .map(status => dataConverters.convertTweet(status))
+        );
+    });
 }
 
 function createTweet(req, res, next) {
@@ -61,5 +84,6 @@ module.exports = {
     getTweets,
     createTweet,
     deleteTweet,
-    updateTweet
+    updateTweet,
+    getRemoteTweets
 };

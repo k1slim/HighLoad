@@ -17,10 +17,11 @@ const authRouter = (passport) => {
     return auth;
 };
 
-const commonRouter = (db, passport) => {
+const commonRouter = (db, passport, twit) => {
     common.get('/api/user', isLoggedIn, passport.getUser);
 
     common.get('/api/tweet', isLoggedIn, db.getTweets);
+    common.get('/api/remote/tweet', isLoggedIn, db.getRemoteTweets.bind(null, twit));
     common.post('/api/tweet', isLoggedIn, db.createTweet);
 
     common.delete('/api/tweet/:id', isLoggedIn, db.deleteTweet);

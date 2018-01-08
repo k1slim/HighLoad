@@ -1,4 +1,5 @@
 const streamingHelper = require('./helpers/streamingHelper');
+const dataConverters = require('./helpers/dataConverters');
 
 const socketActionTag = 'socket/';
 
@@ -37,16 +38,9 @@ const events = {
                 };
 
                 if (insideSquare(global.currentLocation, coordinates)) {
-                    global.tweets.push({
-                        twid: data.id,
-                        coordinates: coordinates,
-                        text: data.text,
-                        hashTags: data.entities.hashtags,
-                        author: data.user.name,
-                        avatar: data.user.profile_image_url,
-                        created_at: data.created_at,
-                        lang: data.lang
-                    });
+                    const tweet = dataConverters.convertTweet(data, coordinates);
+                    global.tweets.push(tweet);
+                    streamingHelper.saveTweets(tweet);
                 }
             }
 
